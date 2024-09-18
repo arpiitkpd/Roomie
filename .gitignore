@@ -1,0 +1,66 @@
+# Node modules
+/node_modules/
+
+# Build output
+/build/
+/dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+/pnpm-debug.log
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Next.js build output
+/.next/
+/out/
+
+# VS Code settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Linux system files
+*~
+.#*
+
+# IDEs and editors
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Temporary files
+*.tmp
+*.swp
+
+# Backup files
+*.bak
+*.orig
+*.swo
+
+# Coverage directory used by testing tools
+/coverage/
+
+# Jest cache
+/.jest/
+jest-coverage/
+
+# Optional npm cache directory
+.npm/
+
+# Yarn v2 (berry) configuration
+.yarn/
+
+# Storybook build output
+/storybook-static/

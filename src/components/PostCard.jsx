@@ -4,20 +4,20 @@ import appwriteService from '../appwrite/config.js';
 import { useSelector } from 'react-redux';
 
 function PostCard({
-  $id, owner, featuredPictures, roomates, Gender, rent, address, from, to
+  $id, owner, featuredPictures, roomates, Gender, rent, address, from, to,  residential, roomsAllocated, condition
 }) {
   const [cachedUrl, setCachedUrl] = useState(null);
+  
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState({});
   
   const userdata = useSelector((state) => state.auth.userData);
   const userId = userdata?.$id;
 
-  console.log(userdata)
   
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   const date1 = new Date(from);
-  const date2 = new Date(to);
+  
 
   // Fetch and cache image and user profile
   useEffect(() => {
@@ -40,6 +40,7 @@ function PostCard({
         } else {
           // Fetch and cache the image if it's not in the cache
           const url = appwriteService.getFilePreview(featuredPictures);
+          
           localStorage.setItem(featuredPictures, url); // Cache the image URL
           setCachedUrl(url);
         }
@@ -83,16 +84,17 @@ function PostCard({
           <span className="font-extrabold text-xl mr-1">{rent}</span>
           <span className="text-xl font-normal">/m</span>
         </div>
-
-        <div className="text-black flex">
-          <span className="text-lg font-normal mr-3">4 bedrooms</span>
-          <span className="text-lg font-normal">Apartment</span>
+        
+        <div className="text-black flex my-1">
+          <span style={{background:"#2358cd6b", borderRadius:"16px"}} className="text-lg font-normal px-1  mr-3">{roomsAllocated}</span>
+          <span style={{background:"#2358cd6b", borderRadius:"16px"}} className="text-lg font-normal px-1  mr-3">{residential}</span>
+          <span style={{background:"#2358cd6b", borderRadius:"16px"}} className="text-lg font-normal px-1 ">{condition}</span>
         </div>
 
         <div className="text-black flex">
           <span className="text-lg font-normal mr-2">{date1.toLocaleDateString('en-US', options)}</span>
           <span className="text-lg font-bold text-gray-500 mr-2">-</span>
-          <span className="text-lg font-normal">{date2.toLocaleDateString('en-US', options)}</span>
+          <span className="text-lg font-normal">{to}</span>
         </div>
 
         <div className="text-gray-600 flex mt-1 mb-1 max-w-fit justify-center items-center" style={{ padding: "1px 1px 0px 8px", background: "#827e7e6b", borderRadius: "23px", color: "#2d2c2c" }}>

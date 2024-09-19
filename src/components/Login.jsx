@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector} from 'react-redux';
 import { Logo, Input, Button } from './index.js';
 import authService from '../appwrite/auth.js';
-import appwriteService from '../appwrite/config.js';
-import { login as authLogin } from '../store/authSlice.js';
+import { login as authLogin} from '../store/authSlice.js';
 import { useForm } from 'react-hook-form';
 
 function Login() {
@@ -12,6 +11,9 @@ function Login() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
+  const userStatus = useSelector((state)=>state.prof.status)
+  
+  console.log(userStatus)
 
   const login = async (data) => {
     setError("");
@@ -20,18 +22,14 @@ function Login() {
       if (session) {
         const user = await authService.getCurrentUser();
         if (user) {
-          dispatch(authLogin({ user }));
-
+          dispatch(authLogin({ userData: user }));
+          
           // Fetch profile and navigate based on the result
           try {
-            const prof = await appwriteService.getProfileById(user.$id);
-            if (prof.total>0) {
-              // Profile exists, navigate to home
-              console.log(prof)
-              navigate("/");
-            } else {
-              // Profile does not exist, navigate to profile form
-              navigate('/profile-form');
+            if(userStatus){
+              navigate("/")
+            }else{
+              navigate("/profile-form")
             }
           } catch (profileError) {
             console.error('Error fetching profile:', profileError);

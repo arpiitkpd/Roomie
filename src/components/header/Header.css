@@ -1,0 +1,21 @@
+/* Ensure parent div size and overflow handling */
+.nav-logo-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  /* Styles for desktop logo */
+  .logo-img {
+    max-width: 100px; /* Adjust as needed */
+    height: auto;
+    display: block;
+  }
+  
+  /* Styles for mobile logo */
+  .logo-img-mobile {
+    max-width: 60px; /* Adjust as needed */
+    height: auto;
+    display: block;
+  }
+  

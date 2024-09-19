@@ -31,22 +31,31 @@ function Post() {
     }
   }, [slug, navigate]);
 
-  const deletePost = () => {
+  const deletePost = async () => {
     setLoading(true);
-    appwriteService.deletePost(post.$id).then((status) => {
-      if (status) {
-        appwriteService.deleteFile(post.featuredPictures);
-        sessionStorage.removeItem(`post-${post.$id}`)
-        localStorage.removeItem(`post-${post.$id}`);  // Replace with the correct key for posts if needed
-        sessionStorage.removeItem(`image-${post.featuredPictures}`); // Replace with the correct key for images if needed
-        localStorage.removeItem(`image-${post.featuredPictures}`);  
-        
-      
-      
-        navigate('/');
+    try {
+      // Delete post from server
+      await appwriteService.deletePost(post.$id);
+  
+      // Delete related files
+      if (post.featuredPictures) {
+        await appwriteService.deleteFile(post.featuredPictures);
       }
-    });
+  
+      // Remove individual post cache
+      sessionStorage.removeItem(`post-${post.$id}`);
+      localStorage.removeItem(`post-${post.$id}`);
+      navigate('/');
+      // Redirect to homepage
+      
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      // Optionally, set an error state to display a message to the user
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);

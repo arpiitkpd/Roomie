@@ -13,6 +13,7 @@ import Select from "./Select";
 import ProfileForm from "./ProfileForm";
 import Loader from "./loader/Loader";
 import Hamburger from "./header/Hamburger";
+import MultiValueInput from "./MultiInput";
 
 export{
     Header,
@@ -29,5 +30,6 @@ export{
     Select,
     ProfileForm,
     Loader,
-    Hamburger
+    Hamburger,
+    MultiValueInput
 }

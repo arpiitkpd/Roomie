@@ -17,6 +17,9 @@ import EditPost from './pages/EditPost.jsx'
 import Post from './pages/Post.jsx'
 import ProfileForm from './pages/ProfileForm.jsx'
 import Profile from './pages/Profile.jsx'
+import QueryPosts from './pages/QueryPosts.jsx'
+import Test from './pages/Test.jsx'
+import Setting from './pages/Setting.jsx'
 
 const router = createBrowserRouter([
   {
@@ -73,6 +76,12 @@ const router = createBrowserRouter([
         )
       },
       {
+        path: "/test",
+        element:(
+            <Test/>
+        )
+      },
+      {
         path: "/profile-form",
         element:(
           <ProfileForm/>
@@ -81,15 +90,23 @@ const router = createBrowserRouter([
       {
         path: "/rooms/:query",
         element:(
-          <Home/>
+          <QueryPosts/>
         )
       },
       {
         path: "/profile/:slug",
         element:(
-          <Protected authentication>
+          
             <Profile/>
-          </Protected>
+         
+        )
+      },
+      {
+        path: "/setting",
+        element:(
+          
+            <Setting/>
+         
         )
       }
       

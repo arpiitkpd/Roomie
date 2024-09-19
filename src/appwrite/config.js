@@ -16,14 +16,14 @@ export class Service{
     }
 
     // post
-    async createPost({ owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to}){
+    async createPost({ owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to, residential, roomsAllocated, condition}){
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 ID.unique(),
                 {
-                    owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to
+                    owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to, residential, roomsAllocated, condition
 
                 }
             )
@@ -77,29 +77,23 @@ export class Service{
         } catch (error) {
             console.log("appwrite service :: deletePost :: error");
             
-        }
+        } 
     }
 
-    async updatePost(slug,{owner, address, featuredPictures, flatSize, conditions, Gender, rent, description}){
+    async updatePost(slug,{ owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to, residential, roomsAllocated, condition}){
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug,
                 {
-                    owner, 
-                    address, 
-                    featuredPictures, 
-                    flatSize, 
-                    conditions, 
-                    Gender, 
-                    rent, 
-                    description,
+                    owner, featuredPictures, roomates, Gender, rent,address,status, userId, from , to, residential, roomsAllocated, condition
+
                
                 }
             )
         } catch (error) {
-            console.log("appwrite service: updatePOst : error");
+            console.log("appwrite service: updatePOst : error", error);
             
         }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import {useForm} from 'react-hook-form'
-import {Button,Input, Select} from './index.js'
+import {Button,Input, Select, MultiValueInput} from './index.js'
 import appwriteService from '../appwrite/config.js'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -16,19 +16,20 @@ function Postform({post}) {
             Gender: post?.Gender || "Male",
             roomates: post?.roomates,
             from: post?.from,
-            to: post?.to
+            to: post?.to,
+            featuredPictures: post?.featuredPictures,
+            residential: post?.residential,
+            roomsAllocated: post?.roomsAllocated,
+            condition: post?.condition
         }
     })
 
     const navigate = useNavigate();
     const userData = useSelector(state => state.auth.userData)
-    // console.log(userData);
-    
-    
-    
-    
 
     const submit= async(data)=>{
+        console.log(data);
+        
         if(post){
             const file=data.image[0]?appwriteService.uploadFile(data.image[0]): null
             
@@ -40,7 +41,11 @@ function Postform({post}) {
             const dbPost = await appwriteService.updatePost(post.$id,{
                
                 ...data,
+                rent: Number(data.rent),
+                roomates: Number(data.roomates),
+                roomsAllocated: Number(data.roomsAllocated),
                 featuredPictures: file? file.$id : undefined,
+
             })
 
             if(dbPost)[
@@ -49,17 +54,19 @@ function Postform({post}) {
 
         }
         else{
-            console.log((data));
+            
             
             const file = await appwriteService.uploadFile(data.image[0]);
-            console.log(file)
+            
             if(file){
                 const fileId = file.$id
                 data.featuredPictures = fileId
+              
                 const dbPost =await appwriteService.createPost({
                     ...data,
                     rent: Number(data.rent),
                     roomates: Number(data.roomates),
+                    roomsAllocated: Number(data.roomsAllocated),
                     userId: userData.$id,
                    
                })
@@ -97,17 +104,6 @@ function Postform({post}) {
 								<p className="text-red text-xs hidden">Please fill out this field.</p>
 							</div>
 
-							<div className="mb-3 space-y-2 w-full text-xs">
-                            <Input
-                            label = 'Address'
-                            placeholder='Address'
-                            className2="font-semibold text-gray-600 py-2"
-                                className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
-                            type="text"
-                            {...register("address", {required: true})}
-                            />
-								<p className="text-red text-xs hidden">Please fill out this field.</p>
-							</div>
 
 							<div className="mb-3 space-y-2 w-full text-xs">
                             <Input
@@ -123,11 +119,11 @@ function Postform({post}) {
 
 							<div className="mb-3 space-y-2 w-full text-xs">
                             <Input
-                            label = 'To: (date)'
-                            placeholder='To'
+                            label = 'Rented Period (months/flexible)'
+                            placeholder='6 months'
                             className2="font-semibold text-gray-600 py-2"
                                 className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
-                            type="date"
+                            type="text"
                             {...register("to")}
                             />
 								<p className="text-red text-xs hidden">Please fill out this field.</p>
@@ -137,7 +133,21 @@ function Postform({post}) {
 
 
 						<div className="md:flex flex-row md:space-x-4 w-full text-xs">
+							
+                            
 							<div className="mb-3 space-y-2 w-full text-xs">
+                            <Input
+                            label = 'Address'
+                            placeholder='Address'
+                            className2="font-semibold text-gray-600 py-2"
+                                className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
+                            type="text"
+                            {...register("address", {required: true})}
+                            />
+								<p className="text-red text-xs hidden">Please fill out this field.</p>
+							</div>
+                            
+                            <div className="mb-3 space-y-2 w-full text-xs">
                             <Input
                             label = 'Roomates required'
                             placeholder='1/2 roomates'
@@ -148,14 +158,6 @@ function Postform({post}) {
                             />
 								<p className="text-red text-xs hidden">Please fill out this field.</p>
 							</div>
-
-							
-
-						</div>
-
-
-						<div className="md:flex flex-row md:space-x-4 w-full text-xs">
-							
 
 							<div className="mb-3 space-y-2 w-full text-xs">
                             <Input
@@ -170,8 +172,53 @@ function Postform({post}) {
 								<p className="text-red text-xs hidden">Please fill out this field.</p>
 							</div>
 
+
 						</div>
 
+
+						<div className="md:flex flex-row md:space-x-4 w-full text-xs">
+							
+                            <div className="mb-3 space-y-2 w-full text-xs">
+                                <Input
+                                label = 'Residential Type'
+                                placeholder='Apartment House Flat'
+                                className2="font-semibold text-gray-600 py-2"
+                                className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
+                                type= "text"
+                                {...register("residential", {required: true})}
+                                />
+
+                                    <p className="text-red text-xs hidden">Please fill out this field.</p>
+                            </div>
+
+                            <div className="mb-3 space-y-2 w-full text-xs">
+                                <Input
+                                label = 'Number of room to rent'
+                                placeholder='2 rooms'
+                                className2="font-semibold text-gray-600 py-2"
+                                className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
+                                type= "number"
+                                {...register("roomsAllocated", {required: true})}
+                                />
+
+                                    <p className="text-red text-xs hidden">Please fill out this field.</p>
+                            </div>
+
+                            
+                            <div className="mb-3 space-y-2 w-full text-xs">
+                                <Select
+                                options = {["Male", "Female"]}
+                                label= 'Gender'
+                                className2="font-semibold text-gray-600 py-2"
+                                className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
+                                {...register("Gender", {required: true})}
+                                />
+
+                                    <p className="text-red text-xs hidden">Please fill out this field.</p>
+                            </div>
+							
+
+						</div>
 
 						<div className="md:flex flex-row md:space-x-4 w-full text-xs">
 							<div className="mb-3 space-y-2 w-full text-xs">
@@ -183,6 +230,22 @@ function Postform({post}) {
                             className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
                             accept= "image/jpg ,  image/png, image/jpeg "
                             {...register("image", {required: !post})}
+                            />
+                            {post && (
+                                
+                                <div className="w-full mb-4">
+                                    <img src={appwriteService.getFilePreview(post.featuredPictures)} alt={post.title}  className="rounded-lg"/>
+                                </div>
+                            )}
+							</div>
+							<div className="mb-3 space-y-2 w-full text-xs">
+                            
+                            <Input 
+                            label="Conditions (Veg/No-smoke/etc)"
+                            type="text"
+                            className2="font-semibold text-gray-600 py-2"
+                            className ='appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4'
+                            {...register("condition", {required: !post})}
                             />
                             {post && (
                                 
@@ -205,10 +268,6 @@ function Postform({post}) {
 							</div>
 
 						</div>
-
-                    
-
-
 
                         {/* button */}
 						<div className="mt-5 text-right md:space-x-3 md:block flex flex-col-reverse">

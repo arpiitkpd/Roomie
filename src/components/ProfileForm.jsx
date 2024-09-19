@@ -14,7 +14,7 @@ function ProfileForm() {
   const { register, handleSubmit } = useForm();
 
   const userdata = useSelector((state) => state.auth.userData);
-  const userId = userdata?.$id; // Ensure userId is defined
+   // Ensure userId is defined
 
   const createProfile = async (data) => {
     setError("");
@@ -22,7 +22,7 @@ function ProfileForm() {
       const file = await appwriteService.uploadFile(data.profilePicture[0]);
       console.log(file);
       
-      
+      const userId = userdata?.$id;
       const dbProfile = await appwriteService.createProfile({
         ...data,
         userId: userId,

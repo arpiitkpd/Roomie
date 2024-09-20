@@ -159,7 +159,7 @@ function Header() {
 
                     <ul className="text-gray-700 px-4">
                       <li className="py-2 hover:bg-gray-200 cursor-pointer">
-                        <Link to={userId ? `/profile/${userId}` : "/login"}>Profile</Link>
+                        <Link to={userId ? `/profile/${userId}` : "/profile-form"}>Profile</Link>
                       </li>
                       <li className="py-2 hover:bg-gray-200 cursor-pointer">
                         <Link to="/setting">Setting</Link>

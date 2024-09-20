@@ -19,8 +19,9 @@ function Signup() {
             const userData = await authService.createAccount(data)
             if (userData) {
                 const userData = await authService.getCurrentUser()
-                if(userData) dispatch(login(userData));
-                try {
+                if(userData){
+                    dispatch(login(userData)); 
+                    try {
                     if(userStatus){
                       navigate("/")
                     }else{
@@ -30,6 +31,8 @@ function Signup() {
                     console.error('Error fetching profile:', profileError);
                     setError('Failed to fetch profile.');
                   }
+                } 
+                
             }
         } catch (error) {
             setError(error.message)

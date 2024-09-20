@@ -20,10 +20,12 @@ function ProfileForm() {
     setError("");
     try {
       const file = await appwriteService.uploadFile(data.profilePicture[0]);
-      console.log(file);
+      
       
       const userId = userdata?.$id;
-      const dbProfile = await appwriteService.createProfile({
+
+      if(userId){
+        const dbProfile = await appwriteService.createProfile({
         ...data,
         userId: userId,
         profilePicture: file?.$id // Handle file upload
@@ -32,10 +34,14 @@ function ProfileForm() {
         dispatch(profile());
         navigate("/");
       }
+      }else{
+        navigate(0);
+      }
+
     } catch (error) {
       setError(error.message);
     }
-  };
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];

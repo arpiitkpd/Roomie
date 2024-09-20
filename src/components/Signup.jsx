@@ -2,7 +2,7 @@ import React , {useState} from "react"
 import { useNavigate, Link} from "react-router-dom"
 import { login } from "../store/authSlice.js"
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {Input, Logo,Button } from './index.js'
 import authService from "../appwrite/auth.js"
 
@@ -11,6 +11,7 @@ function Signup() {
     const [error, setError] = useState("")
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
+    const userStatus = useSelector((state)=>state.prof.status)
 
     const create = async(data) => {
         setError("")
@@ -19,7 +20,16 @@ function Signup() {
             if (userData) {
                 const userData = await authService.getCurrentUser()
                 if(userData) dispatch(login(userData));
-                navigate("/")
+                try {
+                    if(userStatus){
+                      navigate("/")
+                    }else{
+                      navigate("/profile-form")
+                    }
+                  } catch (profileError) {
+                    console.error('Error fetching profile:', profileError);
+                    setError('Failed to fetch profile.');
+                  }
             }
         } catch (error) {
             setError(error.message)

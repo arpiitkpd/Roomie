@@ -47,7 +47,7 @@ function Header() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Find your Roomie"
+                placeholder="Find your roofie"
               />
               <button type='submit' className="flex items-center justify-center relative h-8 w-8 rounded-full">
                 <svg
@@ -128,7 +128,7 @@ function Header() {
                         <input
                           type="text"
                           className="pl-4 pr-10 py-2 w-full rounded-full focus:outline-none"
-                          placeholder="Find your Roomie"
+                          placeholder="Find your roofie"
                           value={query}
                           onChange={(e) => setQuery(e.target.value)}
                         />
